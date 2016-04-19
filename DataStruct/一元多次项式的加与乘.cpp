@@ -209,5 +209,3 @@ void PrintP(Polynomial &P) {
     }
     std::cout << std::endl;
 }
-
-git@github.com:Xliezone/DateStruct.git
