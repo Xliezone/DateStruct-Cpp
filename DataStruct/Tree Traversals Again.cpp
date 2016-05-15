@@ -37,7 +37,7 @@ typedef struct TNode {
 void buildTree1(Node &T, int PreIndex, int InIndex, int len) {
     //字符串长度为0时，返回上一层
     if (len <= 0) {
-        T = NULL;
+        T = 0;
         return;
     }
     T = (Node ) malloc(sizeof(TNode));
