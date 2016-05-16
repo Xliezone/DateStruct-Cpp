@@ -32,15 +32,14 @@ void Read(vector<int> &preOrder, vector<int> &inOrder) {
 typedef struct TNode {
     int data;
     TNode *left, *right;
-}* Node;
+} *Node;
 
 void buildTree1(Node &T, int PreIndex, int InIndex, int len) {
-    //字符串长度为0时，返回上一层
     if (len <= 0) {
         T = 0;
         return;
     }
-    T = (Node ) malloc(sizeof(TNode));
+    T = (Node) malloc(sizeof(TNode));
     //存节点
     T->data = preOrder[PreIndex];
     //找出节点在中序序列中的位置
