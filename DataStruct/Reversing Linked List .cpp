@@ -1,103 +1,92 @@
 #include <iostream>
-#include <string>
+#include <vector>
 
 using namespace std;
 
-typedef struct Node {
-	string post;
-	int position;
-	string after;
-	Node* prior;
-	Node* next;
-}* List;
+struct Node {
+    string last;
+    int num;
+    string next;
+};
 
-List Read();
-void Append(string &post, int &position, string &after, List &Rear);
-List Sort(List &head);
-void Print(List &head);
-
-int main() {
-	List L;
-	L = Read();
-	L = Sort(L);
-	Print(L);
-	return 0;
+void Read(vector<Node> &list) {
+    string start;
+    int Len;
+    string N;
+    cin >> start >> Len >> N;
+    Node node;
+    node.last = start;
+    node.num = Len;
+    node.next = N;
+    list.push_back(node);
+    for (int i = 0; i < Len; i++) {
+        string last;
+        int num;
+        string next;
+        cin >> last >> num >> next;
+        Node node;
+        node.last = last;
+        node.num = num;
+        node.next = next;
+        list.push_back(node);
+    }
 }
 
-List Read() {
-	List Head;
-	Head = (List) new List;
-	Head->prior = NULL;
-	Head->next = NULL;
-	string hpost;
-    int hposi;
-    string hafter;
-	cin >> hpost >> hposi >> hafter;
-    Head->post = hpost;
-    Head->position = hposi;
-    Head->after = hafter;
-	List Rear;
-	Rear = Head;
-	while (Head->position-- > 0) {
-		string post;
-		int position;
-		string after;
-		cin >> post >> position >> after;
-		Append(post, position, after, Rear);
-	}
-	return Head;
+//index 初始值为0;
+void Build(vector<Node> &list, int index, vector<Node> &orderList) {
+    string first;
+    if (!index)
+        first = list[index].last;
+    else
+        first = list[index].next;
+    for (int i = 1; i < list.size(); i++) {
+        if (first == list[i].last) {
+            orderList.push_back(list[i]);
+            index = i;
+            Build(list, index, orderList);
+            break;
+        }
+    }
 }
 
-void Append(string &post, int &position, string &after, List &Rear) {
-	List node;
-	node = (List) new List;
-	node->post = post;
-	node->position = position;
-	node->after = after;
-	node->next = NULL;
-	Rear->next = node;
-	node->prior = Rear;
-	Rear = node;
+void Order(int N, vector<Node> &orderList) {
+    if (orderList.size() / N == 0)
+        return;
+    int round = orderList.size() / N;
+    for (int j = 0; j < round; j++) {
+        for (int i = 0; i < N / 2; i++) {
+            Node temp = orderList[i + N*j];
+            orderList[i + N*j] = orderList[N*(2*j+1)-1-i-N*j];
+            orderList[N*(2*j+1)-1-i-N*j] = temp;
+        }
+    }
+
+    for (int i = 0; i < orderList.size(); i++) {
+        if (i < orderList.size()-1)
+        orderList[i].next = orderList[i + 1].last;
+        else
+            orderList[i].next = "-1";
+    }
 }
 
-List Sort(List &head) {
-	List Rear, copyRear;
-	Rear = head->next;
-	List copy;
-	copy = (List) new List;
-	copy->prior = NULL;
-	copy->post = head->post;
-	copy->position = head->position;
-	copy->after = head->after;
-	copyRear = copy;
-	for (int i = 1; i <= head->position; ++i) {
-		for (int j = 1; j <= head->position; ++j) {
-			if (i == Rear->position) {
-				Append(Rear->post, Rear->position, Rear->after, copyRear);
-				copyRear = copyRear->next;
-				break;
-			}
-			else
-				Rear = Rear->next;
-		}
-		Rear = head->next;
-	}
-	head = copy;
-	copy = Rear;
-	free(copy);
-	copy = NULL;
-	return head;
+void Print(vector<Node> &orderList) {
+    for (int i = 0; i < orderList.size(); i++) {
+        cout << orderList[i].last << " " << orderList[i].num << " " << orderList[i].next << endl;
+    }
 }
 
-List Swap(List &head) {
-	return head;
-}
+int main(int argc, char const *argv[]) {
+    /*read data
+    build list
+    change the order
+    print*/
 
-void Print(List &head) {
-	List Rear = head;
-	while (Rear) {
-		cout << Rear->post << " " << Rear->position << " "
-		     << Rear->after << endl;
-		Rear = Rear->next;
-	}
+    vector<Node> list;
+    Read(list);
+    vector<Node> orderList;
+    Build(list, 0, orderList);
+    int N = list[0].next[0] - '0';
+    Order(N, orderList);
+    Print(orderList);
+    return 0;
 }
