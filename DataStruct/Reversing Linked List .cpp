@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -85,7 +86,10 @@ int main(int argc, char const *argv[]) {
     Read(list);
     vector<Node> orderList;
     Build(list, 0, orderList);
-    int N = list[0].next[0] - '0';
+    stringstream ss;
+    ss << list[0].next;
+    int N;
+    ss >> N;
     Order(N, orderList);
     Print(orderList);
     return 0;
