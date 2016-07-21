@@ -11,7 +11,7 @@ void Read(vector<int> &preOrder, vector<int> &inOrder) {
     int N;
     cin >> N;
     stack<int> stack;
-    int index;
+    int index; 
     if (N) {
         for (int i = 0; i < 2 * N; i++) {
             string op;
