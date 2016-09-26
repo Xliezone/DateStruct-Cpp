@@ -1,8 +1,9 @@
 #include <iostream>
+#include <string>
+using namespace std;
 
-int main(int argc, char const *argv[]) {
-    int n;
-    std::cin >> n;
-
+int main() {
+	cout << "hello world" << endl;
+	system("pause");
     return 0;
 }
