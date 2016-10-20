@@ -4,8 +4,12 @@
 
 using namespace std;
 
+int sum(const int a, const int b){
+	return a + b;
+}
+
 int main(){
-	string m, n;
-	cin >> m >> n;
-	cout << m <<endl<< n << endl;
+	int (*p)(const int , const int) = sum;
+	cout << p(1, 2) << endl;
+	return 0;
 }
